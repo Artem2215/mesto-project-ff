@@ -2,45 +2,32 @@
 
 // @todo: DOM узлы +
 
-// @todo: Функция создания карточки 
+// @todo: Функция создания карточки
 
-// @todo: Функция удаления карточки +
+// @todo: Функция удаления карточки
 
-// @todo: Вывести карточки на страницу +
+// @todo: Вывести карточки на страницу
+
 const placesList = document.querySelector('.places__list');
+const cardTemplate = document.querySelector('#card-template').content;
 
-function createCard(i) {
-  const cardTemplate = document.querySelector('#card-template').content;
+function createCard(card, deleteItem) {
   const templateCard = cardTemplate.querySelector('.places__item').cloneNode(true);
-  const buttonDelete = templateCard.querySelector('.card__delete-button');
-  
-// удаление карточек
-  buttonDelete.addEventListener('click', function () {
-    templateCard.remove();
+  templateCard.querySelector('.card__image').src = card.link;
+  templateCard.querySelector('.card__title').textContent = card.name;
+
+  const deleteButton = templateCard.querySelector('.card__delete-button');
+  deleteButton.addEventListener('click', function() {
+    deleteItem(templateCard);
   });
-//
-
-// лайк карточек
-  const buttonLike = templateCard.querySelector('.card__like-button');
-
-  buttonLike.addEventListener('click', function(like) {
-    like.target.classList.toggle('card__like-button_is-active');
-  });
-//
-  templateCard.querySelector('.card__image').src = initialCards[i]['link'];
-  templateCard.querySelector('.card__title').textContent = initialCards[i]['name'];
-
-  placesList.append(templateCard);
+  return templateCard;
 };
 
-for (let i = 0; i < initialCards.length; i++) {
-  createCard(i);
-};
+function deleteItem(templateCard) {
+  templateCard.remove();
+}
 
-function addCard() {
-  const buttonAdd = document.querySelector('.profile__add-button');
-  
-  buttonAdd.addEventListener('click', function() {
-
-  });
-};
+initialCards.forEach((card) => {
+  const cardElement = createCard(card, deleteItem);
+  placesList.append(cardElement);
+});
